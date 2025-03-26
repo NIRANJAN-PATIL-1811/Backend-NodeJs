@@ -1,0 +1,28 @@
+db.students.insertMany(
+  [
+    {
+      'name' : 'roshan',
+      'age' : 34,
+      'height' : 5.11,
+      'weight' : 67
+    },
+    {
+      'name' : 'niranjan',
+      'age' : 30,
+      'height' : 5.7,
+      'weight' : 70
+    },
+    {
+      'name' : 'Sandip',
+      'age' : 44,
+      'height' : 5.8,
+      'weight' : 57
+    },
+    {
+      'name' : 'Shubham',
+      'age' : 27,
+      'height' : 6,
+      'weight' : 63
+    },
+  ]
+);
