@@ -1,12 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import Cookie from "js-cookie";
 
 function First() {
 
   const usenavigate = useNavigate();
 
-  const [ initialSearch, changeSearch ] = useSearchParams();
+  // const [ initialSearch, changeSearch ] = useSearchParams();
 
   // JSON.stringify(Object.values(initialVal)[0])
 
@@ -14,6 +15,7 @@ function First() {
   const pass = useRef();
 
   const [ initialVal, changeVal ] = useState({});
+  const [ initialVal2, changeVal2 ] = useState({});
 
   // if (initialVal) {
   //   console.log(typeof JSON.stringify(initialVal['userToken'], null, 2));
@@ -26,14 +28,28 @@ function First() {
 
     await axios.post("http://localhost:8000/", { email : email.current.value, pass : pass.current.value })
     .then((res) => changeVal(res.data))
-    .catch((error) => changeVal(error))
+    .catch((error) => changeVal(error.data))
   }
-
 
   if (initialVal) {
     useEffect(() => {
-      changeSearch({email : email.current.value, pass : pass.current.value, token : JSON.stringify(Object.values(initialVal)[0])});
+      if (email.current.value != '' || pass.current.value != '', initialVal.msg != undefined) {
+        // changeSearch({email : email.current.value, pass : pass.current.value, token : initialVal.msg});
+        // window.sessionStorage.setItem('Access_Token', initialVal.msg);
+        Cookie.set('Access_Token', initialVal.msg, {expires : 1});
+      }
     }, [initialVal]);
+  }
+
+  function getAns() {
+    axios.post("http://localhost:8000/products", null, {
+      headers : {
+        Authorization : `Bearer ${initialVal.msg}`
+      }
+    })
+    .then((res) => changeVal2(res.data))
+    .catch((error) => changeVal2(error.data));
+
   }
 
   return (
@@ -48,10 +64,12 @@ function First() {
       </form>
 
       <button onClick={() => usenavigate('/')}>Reset</button>
+      <br />
+      <button onClick={() => getAns()}>Get Ans</button>
 
       <div>
         {
-          initialVal ? <h1>{initialVal['userToken']}</h1> : <h1>Loading...</h1>
+          initialVal2.msg ? <><h1>{initialVal2.msg}</h1> <h1>{Cookie.get('Access_Token')}</h1></> : <h1>Loading...</h1>
         }
       </div>
     </>

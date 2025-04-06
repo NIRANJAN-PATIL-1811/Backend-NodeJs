@@ -20,14 +20,16 @@ app.post('/', (req, res) => {
     if (error) {
       return res.json(
         {
-          error
+          msg : error
         }
       );
     }
     else {
+      // console.log("type is ->", typeof userToken);
+      // console.log(userToken);
       return res.json(
         {
-          userToken
+          msg : userToken
         }
       );
     }
@@ -39,38 +41,41 @@ const middlware = (req, res, next) => {
   
   const error_msg = "Token is missing!";
 
-  const getTokenBack = req.query.token;
-  if (getTokenBack == "" || getTokenBack == undefined) {
+  const token = req.headers.authorization.split(' ')[1];
+
+  if (token == "" || token == undefined) {
     return res.json(
       {
-        error_msg
+        msg : error_msg
       }
     );
   }
-
+  req.userToken = token;
   next();
 };
 
 
-app.get('/products', middlware, (req, res) => {
+app.post('/products', middlware, (req, res) => {
+  
+  // console.log(first);
   const final_ans = "This is product";
-  const user_data = {
-    email : req.query.email,
-    pass : req.query.pass
-  };
+  // const user_data = {
+  //   email : req.query.email,
+  //   pass : req.query.pass
+  // };
 
-  jwt.verify({user_data}, secretekey, (error, user_data) => {
+  jwt.verify(req.userToken, secretekey, (error, user_data) => {
     if (error) {
       return res.json(
         {
-          error
+          msg : error
         }
       );
     }
     else {
       return res.json(
         {
-          final_ans
+          msg : final_ans
         }
       );
     }

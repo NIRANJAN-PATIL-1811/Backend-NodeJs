@@ -6,7 +6,7 @@ function Products() {
   const [ initialVal, changeVal ] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:8000/products")
+    axios.post("http://localhost:8000/products")
     .then((res) => changeVal(res.data))
     .then((err) => changeVal(err.data));
   }, []);
