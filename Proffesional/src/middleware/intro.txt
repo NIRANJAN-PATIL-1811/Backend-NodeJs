@@ -1,0 +1,2 @@
+# This folder is used to generate middleware which verifies incomming details which may be
+right or wrong.

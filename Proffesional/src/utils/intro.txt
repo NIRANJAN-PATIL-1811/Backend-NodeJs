@@ -1,0 +1,3 @@
+# This folder is used to generate data like token geration, refresh token generation and validation
+# Also to use for email sending, event generation, verification, password hashing and comparison
+and many more.

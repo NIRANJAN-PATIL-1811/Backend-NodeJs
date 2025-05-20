@@ -1,0 +1,2 @@
+# This folder is used to generate connection of database which may include different collections
+with indivisual file.

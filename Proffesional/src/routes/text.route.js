@@ -1,15 +1,12 @@
 import { Router } from "express";
 import { textmiddleware } from "../middleware/text.middleware.js";
+import {checkDatabase} from "../controllers/checkDB.controller.js";
 
 const text_route = Router();
 
 text_route.route('').get(textmiddleware, (req, res) => {
-  if(req) {
-    res.send('This is text file');
-  }
-  else {
-    res.send('Can not send text file');
-  }
+  res.send('This is text file');
+  checkDatabase();
 });
 
 export default text_route;
