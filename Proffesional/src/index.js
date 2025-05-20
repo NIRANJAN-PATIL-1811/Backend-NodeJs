@@ -12,9 +12,14 @@ import update_route from './routes/update.route.js';
 import { connectDB } from './db/mydb.db.js';
 
 if(cluster.isPrimary) {
-  for (let i = 0; i < os.cpus.length + 1; i++) {
+  for (let i = 0; i < os.cpus().length; i++) {
     cluster.fork();
   }
+
+  cluster.on('exit', (worker) => {
+    console.log(`${worker.process.pid} is died getting new one as replacement`);
+    cluster.fork();
+  });
 }
 else {
   async function main() {
@@ -31,7 +36,7 @@ else {
     app.use('/update', update_route);
   
     app.listen(process.env.PORT, 'localhost', () => {
-      console.log(`Server is running at http://localhost:${process.env.PORT}`);
+      console.log(`${process.pid} Server is running at http://localhost:${process.env.PORT}`);
     });
     }
   
