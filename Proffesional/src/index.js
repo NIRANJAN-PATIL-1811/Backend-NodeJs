@@ -10,6 +10,7 @@ import text_route from './routes/text.route.js';
 import video_route from './routes/video.route.js';
 import update_route from './routes/update.route.js';
 import relation_route from './routes/relation.route.js';
+import get_token_route from './routes/get_token.route.js';
 import { connectDB } from './db/mydb.db.js';
 
 if(cluster.isPrimary) {
@@ -36,6 +37,8 @@ else {
     app.use('/video', video_route);
     app.use('/update', update_route);
     app.use('/relation', relation_route);
+    app.use('/get_token', get_token_route);
+    
   
     app.listen(process.env.PORT, 'localhost', () => {
       console.log(`${process.pid} Server is running at http://localhost:${process.env.PORT}`);
